@@ -58,22 +58,6 @@ function init() {
       }
     });
 }
-//   if (selection === "Leave") {
-//     quit();
-//   } else if (selection === "View Departments") {
-//     viewAllDept();
-//   }
-// });
-// options
-// VIEW
-// departments
-// roles
-// employees
-//   ADD
-// departments
-// roles
-// employees
-// update employee role
 
 init();
 
