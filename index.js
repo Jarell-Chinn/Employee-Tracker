@@ -127,41 +127,188 @@ function addDepartments() {
 }
 function addRoles() {
   // prompt for role name (text)
-  inquirer
-    .prompt([
-      {
-        type: "input",
-        name: "newRole",
-        message: "What is the new Role called?",
-      },
-      // prompt role salery (int)
-      {
-        type: "number",
-        name: "salary",
-        message: "What is the salary",
-      },
-    ])
-    .then((data) => {});
+  db.query("SELECT * FROM departments", (error, departments) => {
+    if (error) {
+      console.error("Cannot get departments", error);
+      return;
+    }
+    const departmentChoices = departments.map((department) => ({
+      name: department.department_name,
+      value: department.id,
+    }));
+
+    inquirer
+      .prompt([
+        {
+          type: "input",
+          name: "newRole",
+          message: "What is the new Role called?",
+        },
+        // prompt role salery (int)
+        {
+          type: "number",
+          name: "salary",
+          message: "What is the salary",
+        },
+        {
+          type: "list",
+          name: "departmentId",
+          message: "Which department will this role be in?",
+          choices: departmentChoices,
+        },
+      ])
+      .then((data) => {
+        db.query(
+          `INSERT INTO roles (title, salary, department_id) VALUES ('${data.newRole}', '${data.salary}', '${data.departmentId}')`
+        );
+      });
+  });
 
   // db query departments
   // prompt for which department (list)
   // db query roles insert new role
 }
 function addEmployees() {
-  // PROMPT
-  // first name (text)
-  // last name (text)
   // db query roles
-  // role (list)
-  // query employees for managers
-  // manager (list)
-  // db query  employees insert new employee
+  db.query("SELECT * FROM roles", (error, roles) => {
+    if (error) {
+      console.error("error getting roles:", error);
+      return;
+    }
+
+    const roleChoices = roles.map((role) => ({
+      name: role.title,
+      value: role.id,
+    }));
+
+    // query employees for managers
+    db.query(
+      "SELECT id, first_name, last_name FROM employees",
+      (error, employees) => {
+        if (error) {
+          console.error("Error fetching employees:", error);
+          return;
+        }
+
+        const employeeChoices = employees.map((employee) => ({
+          name: `${employee.first_name} ${employee.last_name}`,
+          value: employee.id,
+        }));
+        // PROMPT
+        inquirer
+          .prompt([
+            {
+              // first name (text)
+              type: "input",
+              name: "firstName",
+              message: "What is the employee's first name?",
+            },
+            {
+              // last name (text)
+              type: "input",
+              name: "lastName",
+              message: "What is the employee's last name?",
+            },
+            {
+              // role (list)
+              type: "list",
+              name: "roleId",
+              message: "Select the employee's role:",
+              choices: roleChoices,
+            },
+            {
+              // manager (list)
+              type: "list",
+              name: "managerId",
+              message: "Select the employee's manager:",
+              choices: [
+                { name: "None", value: null }, // incase of no manager
+                ...employeeChoices,
+              ],
+            },
+          ])
+          .then((data) => {
+            const firstName = data.firstName;
+            const lastName = data.lastName;
+            const roleId = data.roleId;
+            const managerId = data.managerId;
+
+            //database query to insert the new employee with the role and manager
+            db.query(
+              `INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES ('${firstName}', '${lastName}', ${roleId}, ${managerId})`,
+              (error, result) => {
+                if (error) {
+                  console.error("Error adding employee:", error);
+                } else {
+                  console.log("New employee added");
+                }
+              }
+            );
+          });
+      }
+    );
+  });
 }
 function updateEmployeeRole() {
-  // PROMPT
-  //  Which employee (list)
-  //
-  // db query  employees seach employee id
+  // getting role list
+  db.query("SELECT * FROM roles", (error, roles) => {
+    if (error) {
+      console.error("Error getting roles:", error);
+      return;
+    }
+
+    const roleChoices = roles.map((role) => ({
+      name: role.title,
+      value: role.id,
+    }));
+
+    // query to get the list of employees for the managers
+    db.query(
+      "SELECT id, first_name, last_name FROM employees",
+      (error, employees) => {
+        if (error) {
+          console.error("Error fetching employees:", error);
+          return;
+        }
+        const employeeChoices = employees.map((employee) => ({
+          name: `${employee.first_name} ${employee.last_name}`,
+          value: employee.id,
+        }));
+
+        inquirer
+          .prompt([
+            {
+              type: "list",
+              name: "employeeId",
+              message: "Select the employee whose role you want to update:",
+              choices: employeeChoices,
+            },
+            {
+              type: "list",
+              name: "roleId",
+              message: "Select the employee's new role:",
+              choices: roleChoices,
+            },
+          ])
+          .then((data) => {
+            const employeeId = data.employeeId;
+            const roleId = data.roleId;
+
+            // query to update the employee's role
+            db.query(
+              `UPDATE employees SET role_id = ${roleId} WHERE id = ${employeeId}`,
+              (error, result) => {
+                if (error) {
+                  console.error("Error updating employee role:", error);
+                } else {
+                  console.log("Employee role updated successfully!");
+                }
+              }
+            );
+          });
+      }
+    );
+  });
 }
 
 function quit() {
