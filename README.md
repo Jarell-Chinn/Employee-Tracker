@@ -16,7 +16,7 @@ A employee database that is able to add Departments, roles, and employees you ca
 
 run node index.js and use the inquirer prompts to navigate. Here is a video for more clarfication.
 
-![Link to Video](assets/images/NOTEpage.png)
+![Link to Video](https://youtu.be/DRFoT1GBaJw)
 
 ## Learning Points
 
