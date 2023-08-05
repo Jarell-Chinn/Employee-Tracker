@@ -16,13 +16,15 @@ A employee database that is able to add Departments, roles, and employees you ca
 
 run node index.js and use the inquirer prompts to navigate. Here is a video for more clarfication.
 
-![Link to Video](https://youtu.be/DRFoT1GBaJw)
+[Link to Video](https://youtu.be/DRFoT1GBaJw)
 
 ## Learning Points
 
 1. I'm proud of my improved ability to rubberduck debug during this project.
 2. How to use the query method.
 3. I improved my ability to use the map method
+
+![code snippet of map method](./assets/images/mapmethod.png)
 
 ## Author Info
 
