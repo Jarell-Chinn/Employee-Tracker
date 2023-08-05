@@ -1,28 +1,92 @@
 //
-const db = require("db");
+const db = require("./config/connection");
+const inquirer = require("inquirer");
+
+const questions = ["What would you like to do?"];
+const options = [
+  "View departments",
+  "View roles",
+  "View employees",
+  "Add Department",
+  "Add roles",
+  "Add employee",
+  "Update employee",
+  "Leave",
+];
 
 function init() {
-  // inquier prompt
-  // options
-  // VIEW
-  // departments
-  // roles
-  // employees
-  //   ADD
-  // departments
-  // roles
-  // employees
-  // update employee role
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "select",
+        message: questions[0],
+        choices: options,
+      },
+    ])
+    .then((data) => {
+      const selection = data.select;
+      console.log(selection);
+
+      switch (selection) {
+        case "View departments":
+          viewAllDept();
+          break;
+        case "View roles":
+          viewAllRoles();
+          break;
+        case "View employees":
+          viewAllEmployees();
+          break;
+        case "Add Department":
+          addDepartments();
+          break;
+        case "Add roles":
+          addRoles();
+          break;
+        case "Add employee":
+          addEmployees();
+          break;
+        case "Update employee":
+          updateEmployeeRole();
+          break;
+        case "Leave":
+          quit();
+          break;
+        default:
+          console.log("Invalid selection.");
+      }
+    });
 }
+//   if (selection === "Leave") {
+//     quit();
+//   } else if (selection === "View Departments") {
+//     viewAllDept();
+//   }
+// });
+// options
+// VIEW
+// departments
+// roles
+// employees
+//   ADD
+// departments
+// roles
+// employees
+// update employee role
+
+init();
 
 function viewAllDept() {
   // db query from departments
+
   db.query("SELECT * FROM departments", (err, results) => {
     if (err) {
       return console.log(err);
     }
     console.log(results);
   });
+  return;
 }
 function viewAllRoles() {
   // db query from roles table
@@ -59,4 +123,6 @@ function updateEmployeeRole() {
   // db query  employees seach employee id
 }
 
-function quit() {}
+function quit() {
+  return console.log("Have a nice day!");
+}

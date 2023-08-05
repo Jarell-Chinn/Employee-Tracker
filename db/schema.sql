@@ -1,40 +1,37 @@
-DROP DATABASE IF EXISTS department_db;
-CREATE DATABASE department_db;
-
-USE department_db
-
 
 
 -- - `department`
 
+DROP DATABASE IF EXISTS department_db;
+CREATE DATABASE department_db;
+
+USE department_db;
+
+-- Table: departments
 CREATE TABLE departments (
-    --   - `id`: `INT PRIMARY KEY`
---   - `name`: `VARCHAR(30)` to hold department name
-)
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    department_name VARCHAR(30) NOT NULL
+);
 
+-- Table: roles
 CREATE TABLE roles (
---   - `id`: `INT PRIMARY KEY`
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(30) NOT NULL,
+    salary DECIMAL(10, 2) NOT NULL,
+    department_id INT NOT NULL,
+    FOREIGN KEY (department_id) REFERENCES departments(id)
+);
 
---   - `title`: `VARCHAR(30)` to hold role title
-
---   - `salary`: `DECIMAL` to hold role salary
-
---   - `department_id`: `INT` to hold reference to department role belongs to
-
-)
-
+-- Table: employees
 CREATE TABLE employees (
---   - `id`: `INT PRIMARY KEY`
-
---   - `first_name`: `VARCHAR(30)` to hold employee first name
-
---   - `last_name`: `VARCHAR(30)` to hold employee last name
-
---   - `role_id`: `INT` to hold reference to employee role
-
---   - `manager_id`: `INT` to hold reference to another employee that is the manager of the current employee (`null` if the employee has no manager) foreign Key
-)
-
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(30) NOT NULL,
+    last_name VARCHAR(30) NOT NULL,
+    role_id INT NOT NULL,
+    manager_id INT,
+    FOREIGN KEY (role_id) REFERENCES roles(id),
+    FOREIGN KEY (manager_id) REFERENCES employees(id)
+);
 
 
 -- NOTE you can self reference a foreign key
