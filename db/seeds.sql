@@ -6,14 +6,14 @@ INSERT INTO departments (department_name) VALUES
 
 -- Seed data for the roles table
 INSERT INTO roles (title, salary, department_id) VALUES
-    ('HR Manager', 60000.00, 1),
-    ('HR Specialist', 45000.00, 1),
-    ('Finance Manager', 75000.00, 2),
-    ('Finance Analyst', 55000.00, 2),
+    ('HR Manager', 60000, 1),
+    ('HR Specialist', 45000, 1),
+    ('Finance Manager', 75000, 2),
+    ('Finance Analyst', 55000, 2),
     ('Marketing Manager', 65000.00, 3),
-    ('Marketing Coordinator', 40000.00, 3),
-    ('Operations Manager', 70000.00, 4),
-    ('Operations Associate', 50000.00, 4);
+    ('Marketing Coordinator', 40000, 3),
+    ('Operations Manager', 70000, 4),
+    ('Operations Associate', 50000, 4);
 
 -- Seed data for the employees table
 INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES

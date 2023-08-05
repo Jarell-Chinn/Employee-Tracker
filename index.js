@@ -90,18 +90,59 @@ function viewAllDept() {
 }
 function viewAllRoles() {
   // db query from roles table
+  db.query("SELECT * FROM roles", (err, results) => {
+    if (err) {
+      return console.log(err);
+    }
+    console.log(results);
+  });
+  return;
 }
 function viewAllEmployees() {
   // db query from employees table
+  db.query("SELECT * FROM employees", (err, results) => {
+    if (err) {
+      return console.log(err);
+    }
+    console.log(results);
+  });
+  return;
 }
 function addDepartments() {
   // prompt for department name
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "newDepartment",
+        message: "What is the new Department called?",
+      },
+    ])
+    .then((data) => {
+      db.query(`INSERT INTO departments (department_name) VALUES
+    ('${data.newDepartment}')`);
+    });
   //  // make new variable for department name
   // .then db query insert into department value
 }
 function addRoles() {
   // prompt for role name (text)
-  // prompt role salery (int)
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "newRole",
+        message: "What is the new Role called?",
+      },
+      // prompt role salery (int)
+      {
+        type: "number",
+        name: "salary",
+        message: "What is the salary",
+      },
+    ])
+    .then((data) => {});
+
   // db query departments
   // prompt for which department (list)
   // db query roles insert new role
